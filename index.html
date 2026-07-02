@@ -507,8 +507,6 @@ function selectDay(date, cellEl){
       <p class="pc-resumen">${d.resumen}</p>
       <div class="section-h">Horario orientativo</div>
       ${d.timeline.map(t=>`<div class="tl-item"><div class="tl-time">${t[0]}</div><div class="tl-text">${t[1]}${t[2]? `<div class="pc-photos">${t[2].map(p=>`<figure><img src="${p[0]}" alt="${p[1]}" loading="lazy"><figcaption>${p[1]}</figcaption></figure>`).join('')}</div>`:''}</div></div>`).join('')}
-      <div class="section-h" style="margin-top:22px;">Notas</div>
-      <ul class="pc-notes">${d.notes.map(n=>`<li>${n}</li>`).join('')}</ul>
       ${d.pending? `<div class="pending"><strong>Reserva pendiente —</strong> ${d.pending}</div>`:''}
       ${d.planb? `<div class="planb"><strong>Plan B —</strong> ${d.planb}</div>`:''}
     </div>
