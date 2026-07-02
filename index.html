@@ -243,10 +243,9 @@ footer{text-align:center;font-family:'Space Mono',monospace;font-size:10.5px;col
 <div id="gate">
   <div class="box">
     <h2>Acceso privado</h2>
-    <p>Introduce la contraseña para ver la guía de viaje.</p>
-    <input type="password" id="gate-pass" placeholder="Contraseña" autofocus>
-    <button id="gate-btn">Entrar</button>
-    <div class="err" id="gate-err"></div>
+    <p id="gate-question">¿Pablo tiene siempre la razón?</p>
+    <button id="gate-yes" style="margin-bottom:10px;">Sí</button>
+    <button id="gate-no" style="background:transparent;border:1px solid #cfd9d9;color:var(--ink-soft);">No</button>
   </div>
 </div>
 
@@ -527,9 +526,20 @@ checklistData.forEach((c,i)=>{
 
 <script>
 (function(){
-  const PASS = "DamarisCulona123";
   const gate = document.getElementById('gate');
   const content = document.getElementById('site-content');
+  const questionEl = document.getElementById('gate-question');
+  const phrases = [
+    "¿Pablo tiene siempre la razón?",
+    "Vuelve a pensarlo... ¿Pablo tiene siempre la razón?",
+    "Eso ha sonado a \"no\". Inténtalo otra vez: ¿Pablo tiene siempre la razón?",
+    "Damaris, en serio. ¿Pablo tiene siempre la razón?",
+    "No vas a poder entrar hasta que lo admitas. ¿Pablo tiene siempre la razón?",
+    "Última oportunidad antes de que esto sea incómodo: ¿Pablo tiene siempre la razón?",
+    "¿Ya te has dado cuenta de que no hay otra opción? ¿Pablo tiene siempre la razón?",
+    "Se aceptan disculpas. ¿Pablo tiene siempre la razón?"
+  ];
+  let step = 0;
   function unlock(){
     gate.style.display = 'none';
     content.style.display = 'block';
@@ -538,17 +548,10 @@ checklistData.forEach((c,i)=>{
   if(sessionStorage.getItem('cerdena_ok') === '1'){
     unlock();
   }
-  function tryLogin(){
-    const val = document.getElementById('gate-pass').value;
-    if(val === PASS){
-      unlock();
-    } else {
-      document.getElementById('gate-err').textContent = 'Contraseña incorrecta.';
-    }
-  }
-  document.getElementById('gate-btn').addEventListener('click', tryLogin);
-  document.getElementById('gate-pass').addEventListener('keydown', e=>{
-    if(e.key === 'Enter') tryLogin();
+  document.getElementById('gate-yes').addEventListener('click', unlock);
+  document.getElementById('gate-no').addEventListener('click', ()=>{
+    step = Math.min(step + 1, phrases.length - 1);
+    questionEl.textContent = phrases[step];
   });
 })();
 </script>
