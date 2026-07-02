@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Cerdeña Norte · Calendario de viaje</title>
+<title>Viaje Pablo y Damaris ❤️ · Calendario</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500;1,600&family=Quicksand:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
 
@@ -154,6 +154,11 @@ h1{
 .tl-time{font-family:'Space Mono',monospace;font-size:12px;color:var(--terracotta);}
 .tl-text{font-size:14px;line-height:1.5;}
 
+.pc-photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;margin-top:2px;}
+.pc-photos figure{margin:0;border-radius:10px;overflow:hidden;background:#fff;border:1px solid #eadfc4;}
+.pc-photos img{width:100%;height:110px;object-fit:cover;display:block;}
+.pc-photos figcaption{font-family:'Space Mono',monospace;font-size:10px;color:var(--ink-soft);padding:5px 8px;}
+
 .pc-notes{margin:20px 0 0;padding:0;list-style:none;}
 .pc-notes li{
   font-size:13.5px;line-height:1.55;padding:6px 0 6px 20px;position:relative;
@@ -250,8 +255,7 @@ footer{text-align:center;font-family:'Space Mono',monospace;font-size:10.5px;col
 <div class="hero">
   <div class="hero-inner">
     <div class="eyebrow">Guía de viaje</div>
-    <h1>Cerdeña Norte</h1>
-    <p class="hero-sub">16–23 septiembre 2026 · Coche de alquiler, playas por libre, snorkel y una cata bajo los 30 €/persona.</p>
+    <h1>Viaje Pablo y Damaris ❤️</h1>
     <div class="route-line">
       <span class="stop">Alghero</span><span class="arrow">→</span>
       <span class="stop">Olbia</span><span class="arrow">→</span>
@@ -338,7 +342,11 @@ const days = [
     resumen:"Día funcional: recoger coche, conducir hasta la zona de Olbia y descansar. No se planifican visitas.",
     timeline:[["16:25","Llegada al aeropuerto de Alghero."],["17:30","Recogida estimada del coche de alquiler."],["17:45–19:45","Trayecto Alghero aeropuerto → Airbnb zona Olbia."],["20:00+","Check-in, compra/cena por vuestra cuenta y descanso."]],
     costs:[["Gasolina Alghero → Olbia","20–35 € total"],["Cena/compra","Por vuestra cuenta"]],
-    notes:["No meter paradas turísticas: se llega tarde.","Preparar mochila de día para La Maddalena antes de dormir: agua, bañador, toalla, crema, escarpines/snorkel."]
+    notes:["No meter paradas turísticas: se llega tarde.","Preparar mochila de día para La Maddalena antes de dormir: agua, bañador, toalla, crema, escarpines/snorkel."],
+    photos:[
+      ["https://commons.wikimedia.org/wiki/Special:FilePath/Alghero%20city%20walls%20and%20bastions%20-%201.JPG?width=500","Alghero"],
+      ["https://commons.wikimedia.org/wiki/Special:FilePath/Aerial%20view%20of%20Olbia.jpg?width=500","Olbia"]
+    ]
   },
   { date:17, icon:"⛴️", short:"La Maddalena", num:"17 SEP", title:"La Maddalena + Caprera", base:"Base: Olbia",
     resumen:"Aprovechar el coche, cruzar en ferry desde Palau y recorrer La Maddalena y Caprera a vuestro ritmo.",
@@ -346,14 +354,23 @@ const days = [
     costs:[["Ferry coche + 2 pers. A/R","35–60 € total aprox."],["Gasolina Olbia-Palau-Olbia","15–25 € total"],["Parking/comida","10–30 €"]],
     notes:["Priorizar Caprera por la mañana: se siente más natural y salvaje.","Cala Coticcio puede estar regulada y exigir guía/reserva: no contar con ella sin confirmación.","El picnic ahorra tiempo y dinero.","No combinar este día con Costa Esmeralda o Capo Testa."],
     pending:"Revisar horarios Delcomar/Maddalena Lines para el 17/09 y precio coche + 2 adultos. Valorar comprar online la semana anterior.",
-    planb:"Mal tiempo → más pueblos/miradores, volver antes. Sin ferry con coche → Costa Esmeralda por libre."
+    planb:"Mal tiempo → más pueblos/miradores, volver antes. Sin ferry con coche → Costa Esmeralda por libre.",
+    photos:[
+      ["https://commons.wikimedia.org/wiki/Special:FilePath/La%20Maddalena%20-%20Il%20porto%20(02).JPG?width=500","La Maddalena"],
+      ["https://commons.wikimedia.org/wiki/Special:FilePath/Arcipelago%20della%20Maddalena%2C%20Caprera%20Cala%20Napoletana%2001.JPG?width=500","Caprera, Cala Napoletana"]
+    ]
   },
   { date:18, icon:"🌄", short:"Capo Testa", num:"18 SEP", title:"Capo Testa + Santa Teresa Gallura", base:"Base: Olbia",
     resumen:"Ruta terrestre barata y muy paisajística: rocas graníticas, calas y Santa Teresa Gallura.",
     timeline:[["09:00","Salida desde Olbia."],["10:15–10:45","Llegada a Capo Testa."],["10:45–13:30","Capo Testa, Valle della Luna, miradores y rocas."],["13:30–15:00","Comida en Santa Teresa Gallura o picnic."],["15:00–17:30","Baño/cala: Cala Spinosa, Rena di Ponente o Rena di Levante según viento."],["17:30–19:00","Vuelta a Olbia."]],
     costs:[["Gasolina","15–25 € total"],["Parking","0–10 €"],["Picnic","10–20 € para 2"],["Comida fuera sencilla","35–60 € para 2"]],
     notes:["Elegir playa según viento: probar Rena di Ponente/Levante si una cara está movida.","Cala Spinosa es bonita pero de acceso más incómodo.","Día ideal para escarpines y snorkel.","No dedicar demasiado tiempo al pueblo: el valor está en Capo Testa."],
-    planb:"Viento fuerte → más tiempo en Santa Teresa y miradores. Si venís cansados, recortar la tarde."
+    planb:"Viento fuerte → más tiempo en Santa Teresa y miradores. Si venís cansados, recortar la tarde.",
+    photos:[
+      ["https://commons.wikimedia.org/wiki/Special:FilePath/Santa%20Teresa%20Gallura%20-%20Capo%20Testa%20(04).JPG?width=500","Capo Testa"],
+      ["https://commons.wikimedia.org/wiki/Special:FilePath/Valle%20della%20Luna%20(Aggius)%20August%202016.jpg?width=500","Valle della Luna"],
+      ["https://commons.wikimedia.org/wiki/Special:FilePath/Santa_Teresa_Gallura.jpg?width=500","Santa Teresa Gallura"]
+    ]
   },
   { date:19, icon:"🧳", short:"Traslado", num:"19 SEP", title:"Traslado a Alghero: Costa Paradiso + Castelsardo", base:"Olbia → Alghero",
     resumen:"Día de cambio de base con check-in tardío. Se aprovecha el traslado sin ir y volver.",
@@ -361,7 +378,11 @@ const days = [
     costs:[["Gasolina","20–35 € total"],["Parking","0–10 €"],["Comida/picnic","20–60 € para 2"]],
     notes:["Día con maletas: nada visible en el coche.","Preparar mochila de día antes de salir de Olbia.","Costa Paradiso: parada bonita, no día entero de playa.","Castelsardo evita llegar demasiado pronto al check-in."],
     pending:"Confirmar con el Airbnb de Alghero entrada sobre 18:00–19:00. Preguntar por dejar maletas antes (solo emergencia).",
-    planb:"Preocupa dejar maletas → solo Castelsardo y llegar antes. Si llueve → traslado más directo."
+    planb:"Preocupa dejar maletas → solo Castelsardo y llegar antes. Si llueve → traslado más directo.",
+    photos:[
+      ["https://commons.wikimedia.org/wiki/Special:FilePath/Trinit%C3%A0%20d%27Agultu%20e%20Vignola%2C%20Costa%20Paradiso%20(01).jpg?width=500","Costa Paradiso"],
+      ["https://commons.wikimedia.org/wiki/Special:FilePath/Castelsardo%2C%20panorama%20(01).jpg?width=500","Castelsardo"]
+    ]
   },
   { date:20, icon:"🕳️", short:"Gr. Nettuno", num:"20 SEP", title:"Grotta di Nettuno + Capo Caccia", base:"Base: Alghero",
     resumen:"Grotta di Nettuno por tierra, sin barco, para ahorrar y aprovechar Capo Caccia.",
@@ -369,7 +390,11 @@ const days = [
     costs:[["Entrada Grotta di Nettuno","18 €/persona · 36 € para 2"],["Gasolina/parking","5–15 € total"],["Comida sencilla","25–50 € para 2"]],
     notes:["El acceso por tierra implica 654 escalones: bajar y luego subir.","Reservar o comprobar disponibilidad antes de ir.","Confirmar estado oficial del acceso si el mar está malo.","Tarde flexible: playa cercana o Alghero."],
     pending:"Revisar web oficial de Grotta di Nettuno: horario del 20/09, estado del acceso y compra/booking.",
-    planb:"Sin ganas de escalera → barco desde Alghero (+10–20 €/persona). Si falla la cueva → Capo Caccia + Porto Conte/Le Bombarde."
+    planb:"Sin ganas de escalera → barco desde Alghero (+10–20 €/persona). Si falla la cueva → Capo Caccia + Porto Conte/Le Bombarde.",
+    photos:[
+      ["https://commons.wikimedia.org/wiki/Special:FilePath/Grotta_di_nettuno_sardinien.jpg?width=500","Grotta di Nettuno"],
+      ["https://commons.wikimedia.org/wiki/Special:FilePath/Alghero%20-%20Capo%20Caccia%20(01).JPG?width=500","Capo Caccia"]
+    ]
   },
   { date:21, icon:"🍷", short:"Bosa + cata", num:"21 SEP", title:"Bosa + cata Tintas en Sella & Mosca", base:"Base: Alghero",
     resumen:"Día cultural/gastro: carretera costera a Bosa por la mañana y cata de vinos por la tarde.",
@@ -377,7 +402,11 @@ const days = [
     costs:[["Cata Tintas Sella & Mosca","20 €/persona · 40 € para 2"],["Gasolina/parking","15–30 € total"],["Comida en Bosa","40–90 € para 2"]],
     notes:["La cata encaja por precio: 3 vinos, producto local, visita guiada, 1h30.","Reservar preferiblemente a las 16:00 o 17:00.","Conducción tras cata: comer bien y que conduzca quien menos beba.","Sella & Mosca encaja mejor que Bosa si buscáis varios vinos bajo 30 €/persona."],
     pending:"Reservar Sella & Mosca – Tintas para el 21/09 (16:00–17:00). Confirmar que sigue activa y el precio de 20 €/persona.",
-    planb:"Sin horario Tintas → otra cata bajo 30 €/persona o tarde en Alghero. Si la carretera da pereza → Bosa más corto, vuelta por interior."
+    planb:"Sin horario Tintas → otra cata bajo 30 €/persona o tarde en Alghero. Si la carretera da pereza → Bosa más corto, vuelta por interior.",
+    photos:[
+      ["https://commons.wikimedia.org/wiki/Special:FilePath/Bosa-2298388_960_720.jpg?width=500","Bosa"],
+      ["https://commons.wikimedia.org/wiki/Special:FilePath/Alghero%20-%20Cantine%20di%20Sella%20%26%20Mosca%20(01).JPG?width=500","Sella & Mosca"]
+    ]
   },
   { date:22, icon:"🐠", short:"Asinara", num:"22 SEP", title:"Asinara low cost + snorkel por libre", base:"Base: Alghero",
     resumen:"Transporte barato a Asinara desde Stintino y snorkel por libre en zona permitida. El día con más logística pendiente.",
@@ -385,7 +414,12 @@ const days = [
     costs:[["Barco Stintino-Asinara A/R","24–28 €/persona (ref. CheckYeti desde 28 €)"],["Gasolina Alghero-Stintino-Alghero","5–10 €/persona"],["Parking Stintino","5–15 €/persona"],["Picnic/comida","5–15 €/persona"],["Total realista","40–65 €/persona"]],
     notes:["Objetivo snorkel: Cala Sabina, si se puede llegar de forma razonable.","Punto crítico: sin coche privado dentro de Asinara.","Desembarco en Cala d'Oliva → Cala Sabina a pie: 25–50 min por trayecto.","Desembarco en Cala Reale → 2h–2h30 por trayecto: poco recomendable.","Desembarco en Fornelli → inviable en un día.","Llevar snorkel, escarpines, agua, picnic, gorra, crema, bolsa seca y powerbank."],
     pending:"Preguntar antes de reservar: ¿dónde desembarca el barco y se puede ir andando a Cala Sabina o zona permitida? Comprobar horarios del 22/09. Ver transporte interno (bici/e-bike/shuttle) si el desembarco no es Cala d'Oliva.",
-    planb:"Si Asinara no cuadra → Stintino + La Pelosa/calitas + snorkel (reservar La Pelosa). Sin reservas → Porto Ferro + Argentiera + snorkel/playa salvaje."
+    planb:"Si Asinara no cuadra → Stintino + La Pelosa/calitas + snorkel (reservar La Pelosa). Sin reservas → Porto Ferro + Argentiera + snorkel/playa salvaje.",
+    photos:[
+      ["https://commons.wikimedia.org/wiki/Special:FilePath/2024-10-06%20A%20Donkey%20on%20Asinara%20Island%201.jpg?width=500","Asinara"],
+      ["https://commons.wikimedia.org/wiki/Special:FilePath/Stintino%20-%20Panorama%20(03).jpg?width=500","Stintino"],
+      ["https://commons.wikimedia.org/wiki/Special:FilePath/La%20Pelosa%20beach%2C%20north%20Sardinia%20(Italy)%20(23565649234).jpg?width=500","La Pelosa"]
+    ]
   },
   { date:23, icon:"✈️", short:"Vuelo", num:"23 SEP", title:"Mañana libre y vuelo de vuelta", base:"Base: —",
     resumen:"Último día sin planning cerrado por decisión vuestra. El vuelo sale a las 17:00 desde Alghero.",
@@ -443,6 +477,8 @@ function selectDay(date, cellEl){
       <p class="pc-resumen">${d.resumen}</p>
       <div class="section-h">Horario orientativo</div>
       ${d.timeline.map(t=>`<div class="tl-item"><div class="tl-time">${t[0]}</div><div class="tl-text">${t[1]}</div></div>`).join('')}
+      ${d.photos? `<div class="section-h" style="margin-top:22px;">Fotos</div>
+      <div class="pc-photos">${d.photos.map(p=>`<figure><img src="${p[0]}" alt="${p[1]}" loading="lazy"><figcaption>${p[1]}</figcaption></figure>`).join('')}</div>` : ''}
       <div class="section-h" style="margin-top:22px;">Notas</div>
       <ul class="pc-notes">${d.notes.map(n=>`<li>${n}</li>`).join('')}</ul>
       ${d.pending? `<div class="pending"><strong>Reserva pendiente —</strong> ${d.pending}</div>`:''}
