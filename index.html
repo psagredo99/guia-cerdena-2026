@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Cerdeña Norte · Calendario de viaje</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;1,500;1,600&family=Quicksand:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap');
+
+:root{
+  --sea-deep:#0c5f73;
+  --sea:#1e9bb0;
+  --sea-light:#a9dee2;
+  --sand:#f4e4c1;
+  --sand-light:#fbf3e2;
+  --white:#fffdf8;
+  --terracotta:#cf6a44;
+  --sun:#eeab2e;
+  --ink:#183238;
+  --ink-soft:#4c6c72;
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:var(--sand-light);
+  color:var(--ink);
+  font-family:'Quicksand',sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:960px;margin:0 auto;padding:0 20px 70px;}
+
+/* ---------- HERO ---------- */
+.hero{
+  position:relative;
+  background:linear-gradient(160deg,var(--sea-deep) 0%, var(--sea) 70%);
+  color:var(--white);
+  padding:50px 20px 76px;
+  overflow:hidden;
+}
+.hero::before{
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(circle at 88% 12%, rgba(255,255,255,0.18) 0, transparent 6%),
+    radial-gradient(circle at 8% 75%, rgba(255,255,255,0.08) 0, transparent 40%);
+}
+.hero-inner{max-width:960px;margin:0 auto;position:relative;}
+.eyebrow{
+  font-family:'Space Mono',monospace;font-size:12px;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--sun);display:flex;align-items:center;gap:8px;
+}
+.eyebrow::before{content:"⛱";font-size:14px;}
+h1{
+  font-family:'Fraunces',serif;font-style:italic;font-weight:500;
+  font-size:clamp(34px,6vw,52px);line-height:1;margin:12px 0 10px;color:var(--white);
+}
+.hero-sub{max-width:520px;color:var(--sand-light);font-size:15.5px;line-height:1.55;margin-bottom:8px;}
+.route-line{
+  display:flex;flex-wrap:wrap;gap:0;align-items:center;margin-top:20px;
+  font-family:'Space Mono',monospace;font-size:12.5px;
+}
+.route-line .stop{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);padding:5px 12px;border-radius:20px;}
+.route-line .arrow{margin:0 8px;color:var(--sun);}
+.wave{display:block;width:100%;height:46px;margin-top:-2px;}
+
+/* ---------- TABS ---------- */
+.tabs{
+  display:flex;gap:8px;justify-content:center;margin:-40px auto 34px;position:relative;z-index:4;
+}
+.tabbtn{
+  font-family:'Space Mono',monospace;font-size:12.5px;letter-spacing:.03em;
+  background:var(--white);border:2px solid var(--sea);color:var(--sea-deep);
+  padding:10px 20px;border-radius:24px;cursor:pointer;box-shadow:0 6px 16px rgba(12,95,115,.15);
+  transition:all .15s ease;
+}
+.tabbtn.active{background:var(--terracotta);border-color:var(--terracotta);color:#fff;}
+.tabbtn:hover{transform:translateY(-1px);}
+
+.view{display:none;}
+.view.active{display:block;}
+
+/* ---------- CALENDAR ---------- */
+.cal-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
+.cal-title{font-family:'Fraunces',serif;font-style:italic;font-size:24px;color:var(--sea-deep);}
+.cal-legend{font-family:'Space Mono',monospace;font-size:11px;color:var(--ink-soft);}
+.cal-legend span{display:inline-flex;align-items:center;gap:5px;margin-left:12px;}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block;}
+.dot.on{background:var(--terracotta);}
+.dot.off{background:#d8cba7;}
+
+.weekdays{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:8px;}
+.weekdays div{
+  font-family:'Space Mono',monospace;font-size:11px;text-transform:uppercase;
+  text-align:center;color:var(--ink-soft);letter-spacing:.05em;
+}
+.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:36px;}
+.cell{
+  aspect-ratio:1/1.02;border-radius:12px;padding:8px;position:relative;
+  display:flex;flex-direction:column;justify-content:space-between;
+  background:#fff;border:1px solid #eadfc4;
+}
+.cell.muted{background:transparent;border:1px dashed #e5d8b8;opacity:.45;}
+.cell.muted .daynum{color:#b9ab84;}
+.cell .daynum{font-family:'Space Mono',monospace;font-size:12px;color:var(--ink-soft);}
+.cell.trip{
+  cursor:pointer;background:var(--sand);border:1px solid #e6cf9c;
+  box-shadow:0 4px 10px rgba(207,106,68,0.08);
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.cell.trip:hover{transform:translateY(-3px);box-shadow:0 10px 18px rgba(207,106,68,0.18);}
+.cell.trip.selected{background:var(--terracotta);border-color:var(--terracotta);}
+.cell.trip.selected .daynum,.cell.trip.selected .clabel{color:#fff;}
+.cell .icon{font-size:22px;text-align:center;}
+.cell .clabel{
+  font-size:11.5px;line-height:1.25;color:var(--ink);font-weight:600;
+}
+
+@media(max-width:640px){
+  .calendar-grid{gap:5px;}
+  .cell{padding:5px;border-radius:9px;}
+  .cell .icon{font-size:17px;}
+  .cell .clabel{font-size:9px;}
+  .cell .daynum{font-size:10px;}
+}
+
+/* ---------- DAY DETAIL (postcard) ---------- */
+.detail-wrap{min-height:60px;}
+.postcard{
+  background:var(--white);border-radius:4px;position:relative;
+  padding:30px 26px 26px;
+  box-shadow:0 14px 30px rgba(24,50,56,0.1);
+}
+.postcard::before{
+  content:"";position:absolute;top:-9px;left:0;right:0;height:18px;
+  background-image:radial-gradient(circle at 10px 9px, var(--sand-light) 9px, transparent 9.5px);
+  background-size:20px 18px;background-repeat:repeat-x;background-position:left top;
+}
+.pc-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:10px;
+  border-bottom:2px dashed var(--sea-light);padding-bottom:14px;margin-bottom:20px;}
+.pc-date{font-family:'Space Mono',monospace;color:var(--terracotta);font-size:13px;}
+.pc-title{font-family:'Fraunces',serif;font-style:italic;font-weight:600;font-size:26px;color:var(--sea-deep);margin:2px 0 0;}
+.pc-base{
+  font-family:'Space Mono',monospace;font-size:11px;text-transform:uppercase;
+  background:var(--sea-light);color:var(--sea-deep);padding:5px 11px;border-radius:14px;white-space:nowrap;
+}
+.pc-resumen{font-size:15px;line-height:1.6;color:var(--ink-soft);margin-bottom:22px;max-width:620px;}
+
+.section-h{
+  font-family:'Space Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:.09em;
+  color:var(--sea);margin:0 0 12px;display:flex;align-items:center;gap:8px;
+}
+.section-h::after{content:"";flex:1;height:1px;background:var(--sea-light);}
+
+.tl-item{display:grid;grid-template-columns:92px 1fr;gap:14px;padding:9px 0;border-bottom:1px solid #f0e9d4;}
+.tl-item:last-child{border-bottom:none;}
+.tl-time{font-family:'Space Mono',monospace;font-size:12px;color:var(--terracotta);}
+.tl-text{font-size:14px;line-height:1.5;}
+
+.pc-notes{margin:20px 0 0;padding:0;list-style:none;}
+.pc-notes li{
+  font-size:13.5px;line-height:1.55;padding:6px 0 6px 20px;position:relative;
+}
+.pc-notes li::before{content:"🌊";position:absolute;left:0;font-size:11px;top:8px;}
+
+.planb, .pending{
+  margin-top:16px;border-radius:0 10px 10px 0;padding:11px 15px;font-size:13px;line-height:1.55;
+}
+.planb{border-left:3px solid var(--sea);background:#eef8f9;}
+.pending{border-left:3px solid var(--terracotta);background:#fbeee7;}
+.planb strong{color:var(--sea-deep);}
+.pending strong{color:var(--terracotta);}
+
+.empty-hint{
+  text-align:center;color:var(--ink-soft);font-family:'Space Mono',monospace;font-size:13px;
+  padding:40px 20px;border:1px dashed #d8cba7;border-radius:14px;background:#fff;
+}
+
+/* ---------- INFO VIEW ---------- */
+.info-title{font-family:'Fraunces',serif;font-style:italic;font-size:26px;color:var(--sea-deep);margin:0 0 22px;}
+.grid2{display:grid;grid-template-columns:1.15fr .85fr;gap:26px;margin-bottom:30px;}
+@media(max-width:700px){.grid2{grid-template-columns:1fr;}}
+
+.cost-table{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border-radius:10px;overflow:hidden;border:1px solid #eadfc4;margin-bottom:18px;}
+.cost-table td{padding:8px 12px;border-top:1px solid var(--sand-light);}
+.cost-table tr:nth-child(even) td{background:#fffaf0;}
+.cost-amount{font-family:'Space Mono',monospace;color:var(--terracotta);white-space:nowrap;text-align:right;}
+
+.total-box{
+  background:var(--sea-deep);color:#fff;border-radius:14px;padding:20px 22px;margin-bottom:30px;
+  display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:center;
+}
+.total-box .tnum{font-family:'Fraunces',serif;font-style:italic;font-size:27px;color:var(--sun);}
+.total-box .tlabel{font-size:12.5px;color:var(--sea-light);max-width:400px;line-height:1.5;}
+
+.checklist-box{background:#fff;border:1px solid #eadfc4;border-radius:12px;padding:6px 16px;}
+.check-row{display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px dashed var(--sand);font-size:13.5px;cursor:pointer;}
+.check-row:last-child{border-bottom:none;}
+.check-row input{margin-top:3px;accent-color:var(--sea);width:16px;height:16px;flex:0 0 auto;}
+.check-row.done .txt{text-decoration:line-through;color:#a9a08a;}
+.check-row .prio{font-family:'Space Mono',monospace;font-size:9.5px;padding:2px 7px;border-radius:10px;white-space:nowrap;margin-left:auto;text-transform:uppercase;height:fit-content;}
+.prio-alta{background:#f6dfd2;color:var(--terracotta);}
+.prio-muyalta{background:var(--terracotta);color:#fff;}
+.prio-media{background:var(--sand);color:var(--ink-soft);}
+
+.pack-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+@media(max-width:640px){.pack-grid{grid-template-columns:1fr;}}
+.pack-block{background:#fff;border:1px solid #eadfc4;border-radius:12px;padding:14px 16px;}
+.pack-block h4{font-family:'Fraunces',serif;font-style:italic;font-size:16px;margin:0 0 8px;color:var(--sea-deep);}
+.pack-block ul{margin:0;padding-left:18px;font-size:13px;line-height:1.6;}
+.pack-block li::marker{color:var(--sea);}
+
+footer{text-align:center;font-family:'Space Mono',monospace;font-size:10.5px;color:var(--ink-soft);padding:34px 0 0;line-height:1.8;}
+
+/* ---------- PASSWORD GATE ---------- */
+#gate{
+  position:fixed;inset:0;z-index:999;
+  background:linear-gradient(160deg,var(--sea-deep) 0%, var(--sea) 70%);
+  display:flex;align-items:center;justify-content:center;padding:20px;
+}
+#gate .box{
+  background:var(--white);border-radius:16px;padding:34px 30px;max-width:340px;width:100%;
+  box-shadow:0 20px 40px rgba(0,0,0,.25);text-align:center;
+}
+#gate h2{font-family:'Fraunces',serif;font-style:italic;color:var(--sea-deep);margin:0 0 6px;font-size:22px;}
+#gate p{font-size:13px;color:var(--ink-soft);margin:0 0 18px;}
+#gate input{
+  width:100%;padding:11px 14px;border-radius:10px;border:1px solid #cfd9d9;
+  font-family:'Quicksand',sans-serif;font-size:14px;margin-bottom:10px;box-sizing:border-box;
+}
+#gate button{
+  width:100%;padding:11px 14px;border-radius:10px;border:none;background:var(--terracotta);
+  color:#fff;font-family:'Quicksand',sans-serif;font-weight:600;font-size:14px;cursor:pointer;
+}
+#gate .err{color:var(--terracotta);font-size:12px;margin-top:8px;min-height:16px;}
+#site-content{display:none;}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <div class="box">
+    <h2>Acceso privado</h2>
+    <p>Introduce la contraseña para ver la guía de viaje.</p>
+    <input type="password" id="gate-pass" placeholder="Contraseña" autofocus>
+    <button id="gate-btn">Entrar</button>
+    <div class="err" id="gate-err"></div>
+  </div>
+</div>
+
+<div id="site-content">
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">Guía de viaje</div>
+    <h1>Cerdeña Norte</h1>
+    <p class="hero-sub">16–23 septiembre 2026 · Coche de alquiler, playas por libre, snorkel y una cata bajo los 30 €/persona.</p>
+    <div class="route-line">
+      <span class="stop">Alghero</span><span class="arrow">→</span>
+      <span class="stop">Olbia</span><span class="arrow">→</span>
+      <span class="stop">Alghero</span>
+    </div>
+  </div>
+  <svg class="wave" viewBox="0 0 1200 60" preserveAspectRatio="none">
+    <path d="M0,30 C150,60 350,0 600,30 C850,60 1050,0 1200,30 L1200,60 L0,60 Z" fill="#fbf3e2"></path>
+  </svg>
+</div>
+
+<div class="tabs">
+  <button class="tabbtn active" data-view="cal">🗓 Itinerario</button>
+  <button class="tabbtn" data-view="info">📋 Info del viaje</button>
+</div>
+
+<div class="wrap">
+
+  <div class="view active" id="view-cal">
+    <div class="cal-head">
+      <div class="cal-title">Septiembre 2026</div>
+      <div class="cal-legend"><span><i class="dot on"></i>Día de viaje</span><span><i class="dot off"></i>Sin plan</span></div>
+    </div>
+    <div class="weekdays">
+      <div>Lun</div><div>Mar</div><div>Mié</div><div>Jue</div><div>Vie</div><div>Sáb</div><div>Dom</div>
+    </div>
+    <div class="calendar-grid" id="calendar-grid"></div>
+
+    <div class="detail-wrap" id="detail-wrap">
+      <div class="empty-hint">Toca un día del calendario (16–23) para ver el plan completo ↑</div>
+    </div>
+  </div>
+
+  <div class="view" id="view-info">
+    <h2 class="info-title">Presupuesto, checklist y equipaje</h2>
+
+    <div class="total-box">
+      <div class="tnum">230–380 € / persona</div>
+      <div class="tlabel">Sin contar alojamiento, coche de alquiler ni cenas grandes. El rango depende de comidas, parkings y el transporte interno en Asinara.</div>
+    </div>
+
+    <div class="section-h">Presupuesto por día</div>
+    <table class="cost-table" id="cost-table-full"></table>
+
+    <div class="grid2">
+      <div>
+        <div class="section-h">Checklist de reservas</div>
+        <div class="checklist-box" id="checklist"></div>
+      </div>
+      <div>
+        <div class="section-h">Qué llevar</div>
+        <div class="pack-grid">
+          <div class="pack-block">
+            <h4>Mar / playa</h4>
+            <ul><li>Snorkel y gafas</li><li>Escarpines</li><li>Toalla ligera</li><li>Bolsa seca</li><li>Crema solar y gorra</li><li>Bañador de recambio</li></ul>
+          </div>
+          <div class="pack-block">
+            <h4>Coche / rutas</h4>
+            <ul><li>Mochila de día preparada</li><li>Agua y snacks</li><li>Cargador de coche</li><li>Soporte móvil</li><li>Efectivo para parkings</li></ul>
+          </div>
+          <div class="pack-block">
+            <h4>Asinara</h4>
+            <ul><li>Agua extra y picnic</li><li>Powerbank</li><li>Calzado cómodo</li><li>Mapa offline</li><li>Confirmación de barco</li></ul>
+          </div>
+          <div class="pack-block">
+            <h4>Cata</h4>
+            <ul><li>Reserva confirmada</li><li>DNI</li><li>Comida previa</li><li>Conductor designado</li></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      Precios y horarios orientativos, consultados online el 02/07/2026 · Verificar 24–72h antes de cada reserva clave.<br>
+      Fuentes: Delcomar · Ferryhopper · Grotta di Nettuno (oficial) · Alghero Experience · Sella & Mosca · Bonsai Alghero · Parco Asinara · CheckYeti · Sardegna Turismo · Linea del Parco
+    </footer>
+  </div>
+
+</div>
+
+<script>
+const days = [
+  { date:16, icon:"🚗", short:"Llegada", num:"16 SEP", title:"Llegada y traslado a Olbia", base:"Base: Olbia",
+    resumen:"Día funcional: recoger coche, conducir hasta la zona de Olbia y descansar. No se planifican visitas.",
+    timeline:[["16:25","Llegada al aeropuerto de Alghero."],["17:30","Recogida estimada del coche de alquiler."],["17:45–19:45","Trayecto Alghero aeropuerto → Airbnb zona Olbia."],["20:00+","Check-in, compra/cena por vuestra cuenta y descanso."]],
+    costs:[["Gasolina Alghero → Olbia","20–35 € total"],["Cena/compra","Por vuestra cuenta"]],
+    notes:["No meter paradas turísticas: se llega tarde.","Preparar mochila de día para La Maddalena antes de dormir: agua, bañador, toalla, crema, escarpines/snorkel."]
+  },
+  { date:17, icon:"⛴️", short:"La Maddalena", num:"17 SEP", title:"La Maddalena + Caprera", base:"Base: Olbia",
+    resumen:"Aprovechar el coche, cruzar en ferry desde Palau y recorrer La Maddalena y Caprera a vuestro ritmo.",
+    timeline:[["08:00–08:30","Salida desde Olbia hacia Palau."],["09:00–09:30","Llegada a Palau y compra/embarque del ferry."],["09:30–10:00","Ferry Palau → La Maddalena (15–20 min)."],["10:00–13:30","Caprera: Spiaggia del Relitto, Cala Andreani, miradores."],["13:30–14:30","Picnic o comida rápida."],["14:30–17:30","La Maddalena: Bassa Trinita, Monti d'A Rena, Spalmatore."],["18:00–19:00","Ferry de vuelta a Palau."],["19:30–20:30","Regreso a Olbia y cena."]],
+    costs:[["Ferry coche + 2 pers. A/R","35–60 € total aprox."],["Gasolina Olbia-Palau-Olbia","15–25 € total"],["Parking/comida","10–30 €"]],
+    notes:["Priorizar Caprera por la mañana: se siente más natural y salvaje.","Cala Coticcio puede estar regulada y exigir guía/reserva: no contar con ella sin confirmación.","El picnic ahorra tiempo y dinero.","No combinar este día con Costa Esmeralda o Capo Testa."],
+    pending:"Revisar horarios Delcomar/Maddalena Lines para el 17/09 y precio coche + 2 adultos. Valorar comprar online la semana anterior.",
+    planb:"Mal tiempo → más pueblos/miradores, volver antes. Sin ferry con coche → Costa Esmeralda por libre."
+  },
+  { date:18, icon:"🌄", short:"Capo Testa", num:"18 SEP", title:"Capo Testa + Santa Teresa Gallura", base:"Base: Olbia",
+    resumen:"Ruta terrestre barata y muy paisajística: rocas graníticas, calas y Santa Teresa Gallura.",
+    timeline:[["09:00","Salida desde Olbia."],["10:15–10:45","Llegada a Capo Testa."],["10:45–13:30","Capo Testa, Valle della Luna, miradores y rocas."],["13:30–15:00","Comida en Santa Teresa Gallura o picnic."],["15:00–17:30","Baño/cala: Cala Spinosa, Rena di Ponente o Rena di Levante según viento."],["17:30–19:00","Vuelta a Olbia."]],
+    costs:[["Gasolina","15–25 € total"],["Parking","0–10 €"],["Picnic","10–20 € para 2"],["Comida fuera sencilla","35–60 € para 2"]],
+    notes:["Elegir playa según viento: probar Rena di Ponente/Levante si una cara está movida.","Cala Spinosa es bonita pero de acceso más incómodo.","Día ideal para escarpines y snorkel.","No dedicar demasiado tiempo al pueblo: el valor está en Capo Testa."],
+    planb:"Viento fuerte → más tiempo en Santa Teresa y miradores. Si venís cansados, recortar la tarde."
+  },
+  { date:19, icon:"🧳", short:"Traslado", num:"19 SEP", title:"Traslado a Alghero: Costa Paradiso + Castelsardo", base:"Olbia → Alghero",
+    resumen:"Día de cambio de base con check-in tardío. Se aprovecha el traslado sin ir y volver.",
+    timeline:[["09:30–10:00","Salida de Olbia con maletas."],["11:15–13:00","Costa Paradiso / Li Cossi: paseo, miradores y baño si apetece."],["13:00–14:30","Comida sencilla o picnic."],["15:15–16:45","Castelsardo: casco, castillo/miradores, paseo corto."],["18:00–19:00","Llegada a Alghero centro y check-in."],["20:00","Paseo y cena en Alghero."]],
+    costs:[["Gasolina","20–35 € total"],["Parking","0–10 €"],["Comida/picnic","20–60 € para 2"]],
+    notes:["Día con maletas: nada visible en el coche.","Preparar mochila de día antes de salir de Olbia.","Costa Paradiso: parada bonita, no día entero de playa.","Castelsardo evita llegar demasiado pronto al check-in."],
+    pending:"Confirmar con el Airbnb de Alghero entrada sobre 18:00–19:00. Preguntar por dejar maletas antes (solo emergencia).",
+    planb:"Preocupa dejar maletas → solo Castelsardo y llegar antes. Si llueve → traslado más directo."
+  },
+  { date:20, icon:"🕳️", short:"Gr. Nettuno", num:"20 SEP", title:"Grotta di Nettuno + Capo Caccia", base:"Base: Alghero",
+    resumen:"Grotta di Nettuno por tierra, sin barco, para ahorrar y aprovechar Capo Caccia.",
+    timeline:[["09:30","Salida desde Alghero hacia Capo Caccia."],["10:15–10:45","Aparcamiento/miradores y acceso a la Escala del Cabirol."],["11:00–13:00","Grotta di Nettuno + bajada/subida por escaleras + miradores."],["13:30–15:00","Comida sencilla."],["15:00–18:00","Playa cercana: Le Bombarde, Lazzaretto o Maria Pia."],["18:30–20:00","Atardecer y paseo por Alghero."]],
+    costs:[["Entrada Grotta di Nettuno","18 €/persona · 36 € para 2"],["Gasolina/parking","5–15 € total"],["Comida sencilla","25–50 € para 2"]],
+    notes:["El acceso por tierra implica 654 escalones: bajar y luego subir.","Reservar o comprobar disponibilidad antes de ir.","Confirmar estado oficial del acceso si el mar está malo.","Tarde flexible: playa cercana o Alghero."],
+    pending:"Revisar web oficial de Grotta di Nettuno: horario del 20/09, estado del acceso y compra/booking.",
+    planb:"Sin ganas de escalera → barco desde Alghero (+10–20 €/persona). Si falla la cueva → Capo Caccia + Porto Conte/Le Bombarde."
+  },
+  { date:21, icon:"🍷", short:"Bosa + cata", num:"21 SEP", title:"Bosa + cata Tintas en Sella & Mosca", base:"Base: Alghero",
+    resumen:"Día cultural/gastro: carretera costera a Bosa por la mañana y cata de vinos por la tarde.",
+    timeline:[["09:30","Salida desde Alghero."],["09:30–10:45","Carretera costera Alghero-Bosa con paradas en miradores."],["10:45–13:00","Bosa: río Temo, casco antiguo, casas de colores, mirador/castillo."],["13:00–14:30","Comida en Bosa."],["14:30–15:45","Vuelta hacia zona Alghero / Sella & Mosca."],["16:00–17:30","Cata Sella & Mosca – Tintas: visita guiada + 3 vinos + producto local."],["17:30–18:15","Vuelta a Alghero centro."],["18:30–20:00","Descanso, paseo y atardecer."]],
+    costs:[["Cata Tintas Sella & Mosca","20 €/persona · 40 € para 2"],["Gasolina/parking","15–30 € total"],["Comida en Bosa","40–90 € para 2"]],
+    notes:["La cata encaja por precio: 3 vinos, producto local, visita guiada, 1h30.","Reservar preferiblemente a las 16:00 o 17:00.","Conducción tras cata: comer bien y que conduzca quien menos beba.","Sella & Mosca encaja mejor que Bosa si buscáis varios vinos bajo 30 €/persona."],
+    pending:"Reservar Sella & Mosca – Tintas para el 21/09 (16:00–17:00). Confirmar que sigue activa y el precio de 20 €/persona.",
+    planb:"Sin horario Tintas → otra cata bajo 30 €/persona o tarde en Alghero. Si la carretera da pereza → Bosa más corto, vuelta por interior."
+  },
+  { date:22, icon:"🐠", short:"Asinara", num:"22 SEP", title:"Asinara low cost + snorkel por libre", base:"Base: Alghero",
+    resumen:"Transporte barato a Asinara desde Stintino y snorkel por libre en zona permitida. El día con más logística pendiente.",
+    timeline:[["07:45–08:15","Salida desde Alghero hacia Stintino."],["09:00–09:30","Llegada a Marina di Stintino, aparcar y embarcar."],["10:00","Barco hacia Asinara."],["10:30–11:00","Llegada a Asinara, según punto de desembarco."],["11:00–13:30","Desplazamiento a zona de baño/snorkel permitida si está cerca."],["13:30–14:30","Picnic."],["14:30–16:30","Snorkel/paseo tranquilo."],["17:00–18:00","Vuelta hacia Stintino."],["18:30–19:30","Regreso a Alghero."]],
+    costs:[["Barco Stintino-Asinara A/R","24–28 €/persona (ref. CheckYeti desde 28 €)"],["Gasolina Alghero-Stintino-Alghero","5–10 €/persona"],["Parking Stintino","5–15 €/persona"],["Picnic/comida","5–15 €/persona"],["Total realista","40–65 €/persona"]],
+    notes:["Objetivo snorkel: Cala Sabina, si se puede llegar de forma razonable.","Punto crítico: sin coche privado dentro de Asinara.","Desembarco en Cala d'Oliva → Cala Sabina a pie: 25–50 min por trayecto.","Desembarco en Cala Reale → 2h–2h30 por trayecto: poco recomendable.","Desembarco en Fornelli → inviable en un día.","Llevar snorkel, escarpines, agua, picnic, gorra, crema, bolsa seca y powerbank."],
+    pending:"Preguntar antes de reservar: ¿dónde desembarca el barco y se puede ir andando a Cala Sabina o zona permitida? Comprobar horarios del 22/09. Ver transporte interno (bici/e-bike/shuttle) si el desembarco no es Cala d'Oliva.",
+    planb:"Si Asinara no cuadra → Stintino + La Pelosa/calitas + snorkel (reservar La Pelosa). Sin reservas → Porto Ferro + Argentiera + snorkel/playa salvaje."
+  },
+  { date:23, icon:"✈️", short:"Vuelo", num:"23 SEP", title:"Mañana libre y vuelo de vuelta", base:"Base: —",
+    resumen:"Último día sin planning cerrado por decisión vuestra. El vuelo sale a las 17:00 desde Alghero.",
+    timeline:[["Mañana","Desayuno, paseo libre, compras finales o descanso."],["Comida temprana","Cerca de Alghero o camino al aeropuerto."],["14:30–15:00","Ir hacia aeropuerto/devolución de coche con margen."],["17:00","Vuelo de vuelta."]],
+    costs:[["Actividad","Sin presupuesto definido"],["Devolución coche/gasolina","Según política de alquiler"]],
+    notes:["No meter excursiones largas, barco ni playas lejanas.","Buen día para compras: pecorino, vino, bottarga, dulces sardos o recuerdos.","Dejar margen para repostar y devolver coche."]
+  }
+];
+
+const checklistData = [
+  ["muyalta","22 sep · Asinara low cost","Confirmar punto de desembarco, acceso andando a zona de snorkel y horarios de vuelta."],
+  ["alta","17 sep · Ferry Palau/La Maddalena","Revisar horarios y precio coche + 2 adultos. Comprar online si da tranquilidad."],
+  ["alta","20 sep · Grotta di Nettuno","Confirmar horario, acceso por tierra y disponibilidad de entrada."],
+  ["alta","21 sep · Sella & Mosca Tintas","Reservar 16:00–17:00. Confirmar 20 €/persona."],
+  ["media","22 sep · La Pelosa (plan B)","Reservar solo si la queréis como alternativa real."],
+  ["media","19 sep · Airbnb Alghero","Confirmar check-in tardío 18:00–19:00."]
+];
+
+const grid = document.getElementById('calendar-grid');
+const totalDaysInMonth = 30;
+const sep1Dow = 1; // Martes, Lun=0
+for(let i=0;i<sep1Dow;i++){
+  const c = document.createElement('div');
+  c.className = 'cell muted';
+  grid.appendChild(c);
+}
+for(let d=1; d<=totalDaysInMonth; d++){
+  const tripDay = days.find(x=>x.date===d);
+  const c = document.createElement('div');
+  if(tripDay){
+    c.className = 'cell trip';
+    c.innerHTML = `<div class="daynum">${d}</div><div class="icon">${tripDay.icon}</div><div class="clabel">${tripDay.short}</div>`;
+    c.onclick = () => selectDay(tripDay.date, c);
+  } else {
+    c.className = 'cell muted';
+    c.innerHTML = `<div class="daynum">${d}</div>`;
+  }
+  grid.appendChild(c);
+}
+
+function selectDay(date, cellEl){
+  document.querySelectorAll('.cell.trip').forEach(c=>c.classList.remove('selected'));
+  cellEl.classList.add('selected');
+  const d = days.find(x=>x.date===date);
+  const wrap = document.getElementById('detail-wrap');
+  wrap.innerHTML = `
+    <div class="postcard">
+      <div class="pc-head">
+        <div>
+          <div class="pc-date">${d.num}</div>
+          <div class="pc-title">${d.title}</div>
+        </div>
+        <div class="pc-base">${d.base}</div>
+      </div>
+      <p class="pc-resumen">${d.resumen}</p>
+      <div class="section-h">Horario orientativo</div>
+      ${d.timeline.map(t=>`<div class="tl-item"><div class="tl-time">${t[0]}</div><div class="tl-text">${t[1]}</div></div>`).join('')}
+      <div class="section-h" style="margin-top:22px;">Notas</div>
+      <ul class="pc-notes">${d.notes.map(n=>`<li>${n}</li>`).join('')}</ul>
+      ${d.pending? `<div class="pending"><strong>Reserva pendiente —</strong> ${d.pending}</div>`:''}
+      ${d.planb? `<div class="planb"><strong>Plan B —</strong> ${d.planb}</div>`:''}
+    </div>
+  `;
+  wrap.scrollIntoView({behavior:'smooth', block:'nearest'});
+}
+
+window.addEventListener('load', ()=>{
+  const firstCell = [...document.querySelectorAll('.cell.trip')][0];
+  if(firstCell) firstCell.click();
+});
+
+document.querySelectorAll('.tabbtn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.tabbtn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+    document.getElementById('view-'+btn.dataset.view).classList.add('active');
+  });
+});
+
+const costTableEl = document.getElementById('cost-table-full');
+let costHtml = '';
+days.forEach(d=>{
+  costHtml += `<tr><td colspan="2" style="background:var(--sand);font-family:'Space Mono',monospace;font-size:11px;text-transform:uppercase;color:var(--sea-deep);padding:7px 12px;">${d.num} · ${d.title}</td></tr>`;
+  d.costs.forEach(c=>{
+    costHtml += `<tr><td>${c[0]}</td><td class="cost-amount">${c[1]}</td></tr>`;
+  });
+});
+costTableEl.innerHTML = costHtml;
+
+const checklistEl = document.getElementById('checklist');
+checklistData.forEach((c,i)=>{
+  const row = document.createElement('label');
+  row.className = 'check-row';
+  row.innerHTML = `<input type="checkbox" id="chk${i}"><span class="txt">${c[1]} — ${c[2]}</span><span class="prio prio-${c[0]}">${c[0]==='muyalta'?'muy alta':c[0]}</span>`;
+  const cb = row.querySelector('input');
+  cb.addEventListener('change', ()=> row.classList.toggle('done', cb.checked));
+  checklistEl.appendChild(row);
+});
+</script>
+
+</div>
+
+<script>
+(function(){
+  const PASS = "DamarisCulona123";
+  const gate = document.getElementById('gate');
+  const content = document.getElementById('site-content');
+  function unlock(){
+    gate.style.display = 'none';
+    content.style.display = 'block';
+    sessionStorage.setItem('cerdena_ok','1');
+  }
+  if(sessionStorage.getItem('cerdena_ok') === '1'){
+    unlock();
+  }
+  function tryLogin(){
+    const val = document.getElementById('gate-pass').value;
+    if(val === PASS){
+      unlock();
+    } else {
+      document.getElementById('gate-err').textContent = 'Contraseña incorrecta.';
+    }
+  }
+  document.getElementById('gate-btn').addEventListener('click', tryLogin);
+  document.getElementById('gate-pass').addEventListener('keydown', e=>{
+    if(e.key === 'Enter') tryLogin();
+  });
+})();
+</script>
+</body>
+</html>
